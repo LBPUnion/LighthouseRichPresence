@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace LighthouseRichPresence; 
+namespace LBPUnion.LighthouseRichPresence; 
 
 public class RoomSlot {
     [JsonPropertyName("slotId")]

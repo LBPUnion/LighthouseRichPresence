@@ -1,4 +1,4 @@
-namespace LighthouseRichPresence;
+namespace LBPUnion.LighthouseRichPresence;
 
 public enum StatusType {
     Offline = 0,

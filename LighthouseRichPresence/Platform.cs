@@ -1,4 +1,4 @@
-namespace LighthouseRichPresence;
+namespace LBPUnion.LighthouseRichPresence;
 
 public enum Platform {
     PS3 = 0,

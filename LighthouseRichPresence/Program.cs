@@ -2,7 +2,7 @@
 using DiscordRPC;
 using DiscordRPC.Logging;
 
-namespace LighthouseRichPresence; 
+namespace LBPUnion.LighthouseRichPresence; 
 
 public static class Program {
     public static readonly DiscordRpcClient DiscordClient = new("943720816896524319");
