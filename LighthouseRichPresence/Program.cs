@@ -5,14 +5,12 @@ using DiscordRPC.Logging;
 namespace LBPUnion.LighthouseRichPresence; 
 
 public static class Program {
-    public static readonly DiscordRpcClient DiscordClient = new("943720816896524319");
-    public static HttpClient HttpClient;
+    public static readonly DiscordRpcClient DiscordClient = new("978023775176118353");
+    public static HttpClient HttpClient = null!;
 
     public static readonly Dictionary<int, Slot?> SlotCache = new();
 
-    private static bool hadOnlineStatus = false;
-    
-    
+    private static bool hadOnlineStatus;
 
     public static async Task Main(string[] args) {
         if(args.Length != 2) {
@@ -33,12 +31,12 @@ public static class Program {
         DiscordClient.Logger = new ConsoleLogger { Level = LogLevel.Warning };
 
         //Subscribe to events
-        DiscordClient.OnReady += (sender, e) => {
-            Console.WriteLine("Received Ready from user {0}", e.User.Username);
+        DiscordClient.OnReady += (_, e) => {
+            Console.WriteLine($"Ready. Connected Discord user is {e.User.Username}");
         };
 
-        DiscordClient.OnPresenceUpdate += (sender, e) => {
-            Console.WriteLine("Received Update! {0}", e.Presence);
+        DiscordClient.OnPresenceUpdate += (_, e) => {
+            Console.WriteLine($"Received update! {e.Presence}");
         };
 
         while(true) {
@@ -48,9 +46,7 @@ public static class Program {
     }
 
     public static async Task<Slot?> GetSlot(int slotId) {
-        Slot? slot;
-        
-        if(SlotCache.TryGetValue(slotId, out slot) && slot != null) {
+        if(SlotCache.TryGetValue(slotId, out Slot? slot) && slot != null) {
             return slot;
         }
         
