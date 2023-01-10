@@ -130,7 +130,7 @@ public static class Program
 
         string details = $"{userStatus.CurrentVersion.ToPrettyString()} on {userStatus.CurrentPlatform}";
 
-        if (url == "https://lighthouse.lbpunion.com")
+        if (url.Contains("lbpunion.com"))
         {
             instanceCommon = "LBP Union's Beacon";
             instanceImage = "beacon";
