@@ -2,6 +2,10 @@
 using DiscordRPC;
 using DiscordRPC.Logging;
 
+/*
+/  Remind me to go through and bump to .NET 7
+*/
+
 namespace LBPUnion.LighthouseRichPresence;
 
 public static class Program
@@ -93,7 +97,7 @@ public static class Program
             }
             else
             {
-                Console.WriteLine("[LighthouseRichPresence:connect] Awaiting LBP Conection...");
+                Console.WriteLine($"[LighthouseRichPresence:connect] Awaiting a connection to Lighthouse at {url}...");
                 await Task.Delay(15000);
                 return;
             };
