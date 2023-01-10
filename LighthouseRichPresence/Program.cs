@@ -81,6 +81,12 @@ public static class Program
 
     public static async Task UpdatePresence(int userId)
     {
+
+        void Deinitialize()
+        {
+            DiscordClient.Deinitialize();  // safety
+        }
+
         Console.WriteLine("[LighthouseRichPresence:fetch] Fetching status information for User ID " + userId + "...");
 
         string statusJson = await HttpClient.GetStringAsync($"user/{userId}/status");
@@ -93,6 +99,7 @@ public static class Program
             if (hadOnlineStatus)
             {
                 Console.WriteLine("[LighthouseRichPresence:auth] You have signed out of Lighthouse. The program will now exit.");
+                Deinitialize();
                 Environment.Exit(0);
             }
             else
