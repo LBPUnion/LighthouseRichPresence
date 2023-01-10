@@ -1,6 +1,7 @@
 namespace LBPUnion.LighthouseRichPresence;
 
-public enum SlotType {
+public enum SlotType
+{
     Developer = 0,
     User = 1,
     Moon = 2,

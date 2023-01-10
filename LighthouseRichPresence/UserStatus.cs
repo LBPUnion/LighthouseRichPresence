@@ -1,9 +1,10 @@
 using System.Text.Json.Serialization;
 
-namespace LBPUnion.LighthouseRichPresence; 
+namespace LBPUnion.LighthouseRichPresence;
 
 [Serializable]
-public class UserStatus {
+public class UserStatus
+{
     [JsonPropertyName("statusType")]
     public StatusType StatusType { get; set; }
 
