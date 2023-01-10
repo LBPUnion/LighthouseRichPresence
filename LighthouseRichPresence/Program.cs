@@ -43,12 +43,12 @@ public static class Program
         //Subscribe to events
         DiscordClient.OnReady += (_, e) =>
         {
-            Console.WriteLine($"Ready. Connected Discord user is {e.User.Username}");
+            Console.WriteLine($"[LighthouseRichPresence:connect] Connected to user account {e.User.Username}.");
         };
 
         DiscordClient.OnPresenceUpdate += (_, e) =>
         {
-            Console.WriteLine($"Received update! {e.Presence}");
+            Console.WriteLine($"[LighthouseRichPresence:fetch] Received a new {e.Presence} update.");
         };
 
         while (true)
@@ -65,7 +65,7 @@ public static class Program
             return slot;
         }
 
-        Console.WriteLine("Fetching slot" + slotId);
+        Console.WriteLine("[LighthouseRichPresence:fetch] Fetching slot information for" + slotId);
 
         string slotJson = await HttpClient.GetStringAsync("slot/" + slotId);
         slot = (Slot?)JsonSerializer.Deserialize(slotJson, typeof(Slot));
@@ -77,7 +77,7 @@ public static class Program
 
     public static async Task UpdatePresence(int userId)
     {
-        Console.WriteLine("Fetching status for user " + userId);
+        Console.WriteLine("[LighthouseRichPresence:fetch] Fetching status information for User ID" + userId);
 
         string statusJson = await HttpClient.GetStringAsync($"user/{userId}/status");
 
@@ -88,12 +88,12 @@ public static class Program
         {
             if (hadOnlineStatus)
             {
-                Console.WriteLine("You have signed out. The program will now exit.");
+                Console.WriteLine("[LighthouseRichPresence:auth] You have signed out of Lighthouse. The program will now exit.");
                 Environment.Exit(0);
             }
             else
             {
-                Console.WriteLine("Awaiting LBP Conection...");
+                Console.WriteLine("[LighthouseRichPresence:connect] Awaiting LBP Conection...");
                 await Task.Delay(15000);
                 return;
             };
