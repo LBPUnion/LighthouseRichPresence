@@ -1,7 +1,7 @@
 # This workflow will build a .NET project
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 
-name: .NET
+name: Build
 
 on:
   push:
@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-
+    name: Build and Upload Artifacts
     runs-on: ubuntu-latest
 
     steps:
@@ -22,7 +22,24 @@ jobs:
         dotnet-version: 6.0.x
     - name: Restore dependencies
       run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity detailed
+    - name: Publish for Windows x64
+      run: dotnet publish -c Release -r win-x64 --self-contained
+      
+    - name: Publish for Linux x64
+      run: dotnet publish -c Release -r linux-x64 --self-contained
+          
+    - name: Upload Windows x64 build
+      uses: actions/upload-artifact@v3.1.1
+      with:
+          name: "LighthouseRichPresence for Windows x64"
+          path: "LighthouseRichPresence/bin/Release/net6.0/win-x64/publish/"
+          if-no-files-found: error
+          retention-days: 30
+      
+    - name: Upload Linux x64 build
+      uses: actions/upload-artifact@v3.1.1
+      with:
+          name: "LighthouseRichPresence for Linux x64"
+          path: "LighthouseRichPresence/bin/Release/net6.0/linux-x64/publish/"
+          if-no-files-found: error
+          retention-days: 30
