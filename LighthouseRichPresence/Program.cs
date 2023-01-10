@@ -47,7 +47,7 @@ public static class Program
         //Subscribe to events
         DiscordClient.OnReady += (_, e) =>
         {
-            Console.WriteLine($"[LighthouseRichPresence:connect] Connected to user account {e.User.Username}.");
+            Console.WriteLine($"[LighthouseRichPresence:connect] Connected to Discord Client under the user {e.User.Username}.");
         };
 
         DiscordClient.OnPresenceUpdate += (_, e) =>
@@ -69,7 +69,7 @@ public static class Program
             return slot;
         }
 
-        Console.WriteLine("[LighthouseRichPresence:fetch] Fetching slot information for" + slotId);
+        Console.WriteLine("[LighthouseRichPresence:fetch] Fetching slot information for " + slotId + "...");
 
         string slotJson = await HttpClient.GetStringAsync("slot/" + slotId);
         slot = (Slot?)JsonSerializer.Deserialize(slotJson, typeof(Slot));
@@ -81,7 +81,7 @@ public static class Program
 
     public static async Task UpdatePresence(int userId)
     {
-        Console.WriteLine("[LighthouseRichPresence:fetch] Fetching status information for User ID" + userId);
+        Console.WriteLine("[LighthouseRichPresence:fetch] Fetching status information for User ID " + userId + "...");
 
         string statusJson = await HttpClient.GetStringAsync($"user/{userId}/status");
 
