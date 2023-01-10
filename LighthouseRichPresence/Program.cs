@@ -20,6 +20,7 @@ public static class Program
     public static string url = "";
     public static string instanceCommon = "";
     public static string instanceImage = "";
+    public static string instanceProfileUrl = "";
 
     public static async Task Main(string[] args)
     {
@@ -58,7 +59,7 @@ public static class Program
         while (true)
         {
             await UpdatePresence(userId);
-            await Task.Delay(5000);
+            await Task.Delay(10000);
         }
     }
 
@@ -141,11 +142,13 @@ public static class Program
         {
             instanceCommon = "LBP Union's Beacon";
             instanceImage = "beacon";
+            instanceProfileUrl = $"https://beacon.lbpunion.com/user/{userId}";
         }
         else
         {
             instanceCommon = "a Private Instance";
             instanceImage = "private";
+            instanceProfileUrl = $"{url}/user/{userId}";
         }
 
         DiscordClient.SetPresence(new RichPresence
@@ -164,6 +167,10 @@ public static class Program
                 Max = 4,
                 Size = userStatus.CurrentRoom?.PlayerCount ?? 1,
                 ID = "room:" + userStatus.CurrentRoom?.RoomId,
+            },
+            Buttons = new Button[]
+            {
+                new Button() { Label = "View Player's Profile", Url = instanceProfileUrl }
             },
         });
     }
