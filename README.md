@@ -1,10 +1,6 @@
 # LighthouseRichPresence
-Discord Rich Presence for Project Lighthouse
 
-## Usage
+LighthouseRichPresence allows for users to display a Discord Rich Presence status on their profile while they are online a Lighthouse Instance.
 
-`./LighthouseRichPresence <Server URL> <User ID>`
-
-### Example
-
-`./LighthouseRichPresence http://localhost:10060 17`
+## Starting The Program
+`LighthouseRichPresence (server URL) (user ID)`
