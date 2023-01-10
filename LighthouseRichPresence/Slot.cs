@@ -8,5 +8,5 @@ public class Slot
     public int SlotId { get; set; }
 
     [JsonPropertyName("name")]
-    public string Name { get; set; }
+    public string? Name { get; set; }
 }

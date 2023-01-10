@@ -117,13 +117,13 @@ public static class Program
 
         string slotName = "";
 
-        if (userStatus.CurrentRoom?.Slot.SlotType == SlotType.User)
+        if (userStatus.CurrentRoom?.Slot?.SlotType == SlotType.User)
         {
             Slot? slot = await GetSlot(userStatus.CurrentRoom?.Slot.SlotId ?? 0);
-            if (slot != null) slotName = slot.Name;
+            if (slot?.Name != null) slotName = slot.Name;
         }
 
-        string state = userStatus.CurrentRoom?.Slot.SlotType switch
+        string state = userStatus.CurrentRoom?.Slot?.SlotType switch
         {
             SlotType.Developer => "Playing a story level",
             SlotType.User => $"Playing {slotName}",

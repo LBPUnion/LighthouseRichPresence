@@ -8,7 +8,7 @@ public class Room
     public int RoomId { get; set; }
 
     [JsonPropertyName("slot")]
-    public RoomSlot Slot { get; set; }
+    public RoomSlot? Slot { get; set; }
 
     [JsonPropertyName("state")]
     public RoomState State { get; set; }
