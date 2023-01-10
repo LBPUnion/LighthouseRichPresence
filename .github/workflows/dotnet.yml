@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    name: Build and Upload Builds
+    name: Build and Upload Artifacts
     runs-on: ubuntu-latest
 
     steps:
