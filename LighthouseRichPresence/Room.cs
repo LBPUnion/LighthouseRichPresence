@@ -1,13 +1,14 @@
 using System.Text.Json.Serialization;
 
-namespace LBPUnion.LighthouseRichPresence; 
+namespace LBPUnion.LighthouseRichPresence;
 
-public class Room {
+public class Room
+{
     [JsonPropertyName("roomId")]
     public int RoomId { get; set; }
 
     [JsonPropertyName("slot")]
-    public RoomSlot Slot { get; set; }
+    public RoomSlot? Slot { get; set; }
 
     [JsonPropertyName("state")]
     public RoomState State { get; set; }

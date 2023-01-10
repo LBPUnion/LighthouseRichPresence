@@ -1,6 +1,7 @@
 namespace LBPUnion.LighthouseRichPresence;
 
-public enum Platform {
+public enum Platform
+{
     PS3 = 0,
     RPCS3 = 1,
     PSVita = 2,

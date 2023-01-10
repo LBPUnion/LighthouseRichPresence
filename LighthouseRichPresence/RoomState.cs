@@ -1,6 +1,7 @@
 namespace LBPUnion.LighthouseRichPresence;
 
-public enum RoomState {
+public enum RoomState
+{
     /// <summary>
     ///     The room isn't doing anything in particular.
     /// </summary>
