@@ -29,3 +29,6 @@ backup*
 
 *.tmp
 *.bin
+
+# Gitpod
+.gitpod.yml
