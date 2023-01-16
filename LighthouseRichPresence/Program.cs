@@ -15,10 +15,13 @@ public static class Program
 
     public static int userId = 0;
 
+    public static int? slotId = 0;
+
     public static string url = "";
     public static string instanceCommon = "";
     public static string instanceImage = "";
     public static string instanceProfileUrl = "";
+    public static string instanceLevelUrl = "";
 
     public static async Task Main(string[] args)
     {
@@ -141,17 +144,32 @@ public static class Program
 
         string details = $"{userStatus.CurrentVersion.ToPrettyString()} on {userStatus.CurrentPlatform}";
 
+        // Get level ID and make sure it's not null, however needs to be improved
+        if (userStatus.CurrentRoom?.Slot?.SlotId != null)
+        {
+            if (userStatus.CurrentRoom?.Slot?.SlotId != 0)
+            {
+                slotId = userStatus.CurrentRoom?.Slot?.SlotId;
+            }
+        }
+        else
+        {
+            slotId = -1;
+        }
+
         if (url.Contains("lbpunion.com"))
         {
             instanceCommon = "LBP Union's Beacon";
             instanceImage = "beacon";
             instanceProfileUrl = $"https://beacon.lbpunion.com/user/{userId}";
+            instanceLevelUrl = $"https://beacon.lbpunion.com/slot/{slotId}";
         }
         else
         {
             instanceCommon = "a Private Instance";
             instanceImage = "private";
             instanceProfileUrl = $"{url}/user/{userId}";
+            instanceLevelUrl = $"{url}/slot/{slotId}";
         }
 
         // Construct the Rich Presence
@@ -175,6 +193,7 @@ public static class Program
             Buttons = new Button[]
             {
                 new Button() { Label = "View Player's Profile", Url = instanceProfileUrl },
+                new Button() { Label = "View Current Level", Url = instanceLevelUrl },
             },
         });
     }
