@@ -40,22 +40,25 @@ public static class Program
             BaseAddress = new Uri(url + "/api/v1/"),
         };
 
+        // Create the RPC client
         DiscordClient.Initialize();
 
-        //Set the logger
+        // Set the logger
         DiscordClient.Logger = new ConsoleLogger { Level = LogLevel.Warning };
 
-        //Subscribe to events
+        // Subscribe to events
         DiscordClient.OnReady += (_, e) =>
         {
             Console.WriteLine($"[LighthouseRichPresence:connect] Connected to Discord Client under the user {e.User.Username}.");
         };
 
+        // Define a presence update event
         DiscordClient.OnPresenceUpdate += (_, e) =>
         {
             Console.WriteLine($"[LighthouseRichPresence:fetch] Received a new {e.Presence} update.");
         };
 
+        // Loop everything
         while (true)
         {
             await UpdatePresence(userId);
@@ -127,13 +130,13 @@ public static class Program
         {
             SlotType.Developer => "Playing a story level",
             SlotType.User => $"Playing {slotName}",
-            SlotType.Moon => "Creating something awesome",
+            SlotType.Moon => "Creating on the Moon",
             SlotType.Unknown => "Chillin'",
             SlotType.Unknown2 => "Vibin'",
             SlotType.Pod => "Dwelling in the Pod",
-            SlotType.DLC => "Playing a DLC level",
-            null => "Doing something cool",
-            _ => "What's this?",
+            SlotType.DLC => "Playing a DLC Level",
+            null => "Exploring the Imagisphere", // most likely signifies the user is on LBP1
+            _ => "(._. ')",
         };
 
         string details = $"{userStatus.CurrentVersion.ToPrettyString()} on {userStatus.CurrentPlatform}";
@@ -170,7 +173,7 @@ public static class Program
             },
             Buttons = new Button[]
             {
-                new Button() { Label = "View Player's Profile", Url = instanceProfileUrl }
+                new Button() { Label = "View Player's Profile", Url = instanceProfileUrl },
             },
         });
     }
