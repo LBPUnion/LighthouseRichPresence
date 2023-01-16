@@ -2,10 +2,6 @@
 using DiscordRPC;
 using DiscordRPC.Logging;
 
-/*
-/  Remind me to go through and bump to .NET 7
-*/
-
 namespace LBPUnion.LighthouseRichPresence;
 
 public static class Program
@@ -16,6 +12,8 @@ public static class Program
     public static readonly Dictionary<int, Slot?> SlotCache = new();
 
     private static bool hadOnlineStatus;
+
+    public static int userId = 0;
 
     public static string url = "";
     public static string instanceCommon = "";
@@ -32,9 +30,9 @@ public static class Program
         }
 
         url = args[0];
+        userId = int.Parse(args[1]);
 
-        int userId = int.Parse(args[1]);
-
+        // HTTP Client method, to fetch Lighthouse information
         HttpClient = new HttpClient
         {
             BaseAddress = new Uri(url + "/api/v1/"),
@@ -66,6 +64,7 @@ public static class Program
         }
     }
 
+    // Get slot
     public static async Task<Slot?> GetSlot(int slotId)
     {
         if (SlotCache.TryGetValue(slotId, out Slot? slot) && slot != null)
@@ -83,6 +82,7 @@ public static class Program
         return slot;
     }
 
+    // Discord RPC update task
     public static async Task UpdatePresence(int userId)
     {
 
@@ -154,6 +154,7 @@ public static class Program
             instanceProfileUrl = $"{url}/user/{userId}";
         }
 
+        // Construct the Rich Presence
         DiscordClient.SetPresence(new RichPresence
         {
             Details = details,
