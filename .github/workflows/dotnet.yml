@@ -19,7 +19,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 7.0.x
     - name: Restore dependencies
       run: dotnet restore
     - name: Publish for Windows x64
@@ -32,7 +32,7 @@ jobs:
       uses: actions/upload-artifact@v3.1.1
       with:
           name: "LighthouseRichPresence for Windows x64"
-          path: "LighthouseRichPresence/bin/Release/net6.0/win-x64/publish/"
+          path: "LighthouseRichPresence/bin/Release/net7.0/win-x64/publish/"
           if-no-files-found: error
           retention-days: 30
       
@@ -40,6 +40,6 @@ jobs:
       uses: actions/upload-artifact@v3.1.1
       with:
           name: "LighthouseRichPresence for Linux x64"
-          path: "LighthouseRichPresence/bin/Release/net6.0/linux-x64/publish/"
+          path: "LighthouseRichPresence/bin/Release/net7.0/linux-x64/publish/"
           if-no-files-found: error
           retention-days: 30

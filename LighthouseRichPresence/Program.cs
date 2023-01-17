@@ -2,10 +2,6 @@
 using DiscordRPC;
 using DiscordRPC.Logging;
 
-/*
-/  Remind me to go through and bump to .NET 7
-*/
-
 namespace LBPUnion.LighthouseRichPresence;
 
 public static class Program
@@ -17,10 +13,15 @@ public static class Program
 
     private static bool hadOnlineStatus;
 
+    public static int userId = 0;
+
+    public static int? slotId = 0;
+
     public static string url = "";
     public static string instanceCommon = "";
     public static string instanceImage = "";
     public static string instanceProfileUrl = "";
+    public static string instanceLevelUrl = "";
 
     public static async Task Main(string[] args)
     {
@@ -32,30 +33,33 @@ public static class Program
         }
 
         url = args[0];
+        userId = int.Parse(args[1]);
 
-        int userId = int.Parse(args[1]);
-
+        // HTTP Client method, to fetch Lighthouse information
         HttpClient = new HttpClient
         {
             BaseAddress = new Uri(url + "/api/v1/"),
         };
 
+        // Create the RPC client
         DiscordClient.Initialize();
 
-        //Set the logger
+        // Set the logger
         DiscordClient.Logger = new ConsoleLogger { Level = LogLevel.Warning };
 
-        //Subscribe to events
+        // Subscribe to events
         DiscordClient.OnReady += (_, e) =>
         {
             Console.WriteLine($"[LighthouseRichPresence:connect] Connected to Discord Client under the user {e.User.Username}.");
         };
 
+        // Define a presence update event
         DiscordClient.OnPresenceUpdate += (_, e) =>
         {
             Console.WriteLine($"[LighthouseRichPresence:fetch] Received a new {e.Presence} update.");
         };
 
+        // Loop everything
         while (true)
         {
             await UpdatePresence(userId);
@@ -63,6 +67,7 @@ public static class Program
         }
     }
 
+    // Get slot
     public static async Task<Slot?> GetSlot(int slotId)
     {
         if (SlotCache.TryGetValue(slotId, out Slot? slot) && slot != null)
@@ -80,6 +85,7 @@ public static class Program
         return slot;
     }
 
+    // Discord RPC update task
     public static async Task UpdatePresence(int userId)
     {
 
@@ -127,30 +133,46 @@ public static class Program
         {
             SlotType.Developer => "Playing a story level",
             SlotType.User => $"Playing {slotName}",
-            SlotType.Moon => "Creating something awesome",
+            SlotType.Moon => "Creating on the Moon",
             SlotType.Unknown => "Chillin'",
             SlotType.Unknown2 => "Vibin'",
             SlotType.Pod => "Dwelling in the Pod",
-            SlotType.DLC => "Playing a DLC level",
-            null => "Doing something cool",
-            _ => "What's this?",
+            SlotType.DLC => "Playing a DLC Level",
+            null => "Exploring the Imagisphere", // most likely signifies the user is on LBP1
+            _ => "(._. ')",
         };
 
         string details = $"{userStatus.CurrentVersion.ToPrettyString()} on {userStatus.CurrentPlatform}";
+
+        // Get level ID and make sure it's not null, however needs to be improved
+        if (userStatus.CurrentRoom?.Slot?.SlotId != null)
+        {
+            if (userStatus.CurrentRoom?.Slot?.SlotId != 0)
+            {
+                slotId = userStatus.CurrentRoom?.Slot?.SlotId;
+            }
+        }
+        else
+        {
+            slotId = -1;
+        }
 
         if (url.Contains("lbpunion.com"))
         {
             instanceCommon = "LBP Union's Beacon";
             instanceImage = "beacon";
             instanceProfileUrl = $"https://beacon.lbpunion.com/user/{userId}";
+            instanceLevelUrl = $"https://beacon.lbpunion.com/slot/{slotId}";
         }
         else
         {
             instanceCommon = "a Private Instance";
             instanceImage = "private";
             instanceProfileUrl = $"{url}/user/{userId}";
+            instanceLevelUrl = $"{url}/slot/{slotId}";
         }
 
+        // Construct the Rich Presence
         DiscordClient.SetPresence(new RichPresence
         {
             Details = details,
@@ -170,7 +192,8 @@ public static class Program
             },
             Buttons = new Button[]
             {
-                new Button() { Label = "View Player's Profile", Url = instanceProfileUrl }
+                new Button() { Label = "View Player's Profile", Url = instanceProfileUrl },
+                new Button() { Label = "View Current Level", Url = instanceLevelUrl },
             },
         });
     }
